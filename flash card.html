@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  .container {
+    display: flex;
+    align-items: center;
+  }
+  .flashcard {
+    width: 300px;
+    height: 400px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-align: center;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+  }
+  .flashcard .front, .flashcard .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .flashcard .back {
+    transform: rotateY(180deg);
+  }
+  .meaning {
+    font-weight: bold;
+    color: green;
+    margin-bottom: 20px;
+  }
+  .example {
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  .navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .navigation button {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6200ea;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .navigation button:hover {
+    background-color: #3700b3;
+  }
+  .prev, .next {
+    position: relative;
+    top: 50%;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="navigation prev">
+    <button onclick="prevCard()">Previous</button>
+  </div>
+  <div class="flashcard">
+    <div class="front" id="front">
+      Word
+    </div>
+    <div class="back" id="back">
+      <div class="meaning">Meaning</div>
+      <div class="example">Example sentence</div>
+    </div>
+  </div>
+  <div class="navigation next">
+    <button onclick="nextCard()">Next</button>
+  </div>
+</div>
+
+<script>
+  const words = [
+    {word: 'Indien', meaning: 'India', sentence: 'Indien ist bekannt für seine reiche Kultur und Tradition.'},
+    {word: 'wirtschaftlichen', meaning: 'economic', sentence: 'Die wirtschaftlichen Aussichten des Landes sind positiv.'},
+    {word: 'Supermacht', meaning: 'superpower', sentence: 'Viele Experten glauben, dass China eine neue Supermacht ist.'},
+    {word: 'Wachstum', meaning: 'growth', sentence: 'Das Wachstum der Firma in den letzten Jahren war beeindruckend.'},
+    {word: 'Start-ups', meaning: 'start-ups', sentence: 'Viele Start-ups haben in der Technologiebranche Fuß gefasst.'},
+    {word: 'indische', meaning: 'Indian', sentence: 'Die indische Küche ist für ihre Gewürze und Aromen bekannt.'},
+    {word: 'Wirtschaft', meaning: 'economy', sentence: 'Die Wirtschaft des Landes hat sich nach der Rezession erholt.'},
+    {word: 'wächst', meaning: 'grows', sentence: 'Die Bevölkerung der Stadt wächst jedes Jahr.'},
+    {word: 'rasant', meaning: 'rapid', sentence: 'Die Technologie entwickelt sich rasant weiter.'},
+    {word: 'Jahren', meaning: 'years', sentence: 'Sie hat vor vielen Jahren in dieser Firma angefangen zu arbeiten.'},
+    {word: 'soll', meaning: 'should', sentence: 'Er soll morgen zur Besprechung kommen.'},
+    {word: 'Deutschland', meaning: 'Germany', sentence: 'Deutschland ist bekannt für seine Automobilindustrie.'},
+    {word: 'Japan', meaning: 'Japan', sentence: 'Japan ist ein Land mit einer reichen Geschichte und Tradition.'},
+    {word: 'überholt', meaning: 'overtaken', sentence: 'Der neue Zug hat den alten überholt.'},
+    {word: 'haben', meaning: 'have', sentence: 'Wir haben gestern einen schönen Film gesehen.'},
+    {word: 'Menschen', meaning: 'people', sentence: 'Viele Menschen reisen gerne in ferne Länder.'},
+    {word: 'zuvor', meaning: 'before', sentence: 'Ich habe zuvor nie von dieser Regel gehört.'},
+    {word: 'ausgewandert', meaning: 'emigrated', sentence: 'Meine Familie ist vor vielen Jahren ausgewandert.'},
+    {word: 'waren', meaning: 'were', sentence: 'Wir waren gestern im Park spazieren.'},
+    {word: 'kehren', meaning: 'return', sentence: 'Viele Studenten kehren nach dem Studium in ihre Heimatstadt zurück.'},
+    {word: 'zurück', meaning: 'back', sentence: 'Er kam zurück, um seine Sachen zu holen.'},
+    {word: 'ihre', meaning: 'her/their', sentence: 'Sie hat ihre Schlüssel verloren.'},
+    {word: 'Heimat', meaning: 'homeland', sentence: 'Für viele ist die Heimat ein besonderer Ort.'},
+    {word: 'bauen', meaning: 'build', sentence: 'Sie planen, ein neues Haus zu bauen.'},
+    {word: 'dort', meaning: 'there', sentence: 'Wir werden dort auf dich warten.'},
+    {word: 'Firmen', meaning: 'companies', sentence: 'Viele Firmen bieten flexible Arbeitszeiten an.'},
+    {word: 'auf', meaning: 'on', sentence: 'Bitte legen Sie die Bücher auf den Tisch.'},
+    {word: 'Beamer', meaning: 'projector', sentence: 'Der Beamer wird für die Präsentation benötigt.'},
+    {word: 'neuesten', meaning: 'latest', sentence: 'Die neuesten Nachrichten sind sehr beunruhigend.'},
+    {word: 'Geschäftszahlen', meaning: 'business figures', sentence: 'Die Geschäftszahlen des letzten Quartals waren sehr gut.'},
+    {word: 'Team', meaning: 'team', sentence: 'Unser Team arbeitet effektiv und harmonisch zusammen.'},
+    {word: 'Jährige', meaning: 'year old', sentence: 'Der 20-Jährige hat sein Studium erfolgreich abgeschlossen.'},
+    {word: 'südindischen', meaning: 'South Indian', sentence: 'Die südindischen Gerichte sind sehr würzig.'},
+    {word: 'Millionenmetropole', meaning: 'megacity', sentence: 'Mumbai ist eine Millionenmetropole mit einem pulsierenden Nachtleben.'},
+    {word: 'Hyderabad', meaning: 'Hyderabad', sentence: 'Hyderabad ist bekannt für seine historischen Monumente.'},
+    {word: 'Unternehmen', meaning: 'company', sentence: 'Das Unternehmen hat seinen Umsatz gesteigert.'},
+    {word: 'gegründet', meaning: 'founded', sentence: 'Die Stiftung wurde im Jahr 2000 gegründet.'},
+    {word: 'beliebtesten', meaning: 'most popular', sentence: 'Es ist einer der beliebtesten Orte für Touristen.'},
+    {word: 'Arbeitgeber', meaning: 'employer', sentence: 'Er ist einer der größten Arbeitgeber der Region.'},
+    {word: 'Land', meaning: 'country', sentence: 'Das Land ist bekannt für seine schöne Landschaft.'},
+    {word: 'jungen', meaning: 'young', sentence: 'Viele junge Menschen suchen nach Jobs.'},
+    {word: 'Indern', meaning: 'Indians', sentence: 'Die Inder sind stolz auf ihre Kultur und Traditionen.'},
+    {word: 'zieht', meaning: 'attracts', sentence: 'Der Park zieht viele Besucher an.'},
+    {word: 'ausländische', meaning: 'foreign', sentence: 'Das Unternehmen exportiert Produkte an ausländische Märkte.'},
+    {word: 'Investoren', meaning: 'investors', sentence: 'Investoren suchen nach profitablen Geschäftsmöglichkeiten.'},
+    {word: 'an', meaning: 'on', sentence: 'Bitte schalten Sie das Licht an.'},
+    {word: 'erfolgreich', meaning: 'successful', sentence: 'Sie hat ihr Studium erfolgreich abgeschlossen.'},
+    {word: 'expandieren', meaning: 'expand', sentence: 'Das Unternehmen plant, in neue Märkte zu expandieren.'},
+    {word: 'globalen', meaning: 'global', sentence: 'Wir leben in einer globalen Gesellschaft mit vielen Verbindungen.'},
+    {word: 'Markt', meaning: 'market', sentence: 'Der Markt bietet eine Vielzahl von frischen Produkten an.'},
+];
+
+  
+  let currentIndex = 0;
+
+  const flashcard = document.querySelector('.flashcard');
+  const front = document.getElementById('front');
+  const back = document.getElementById('back');
+
+  flashcard.addEventListener('click', () => {
+    flashcard.style.transform = flashcard.style.transform ? '' : 'rotateY(180deg)';
+  });
+
+  function showCard(index) {
+    front.textContent = words[index].word;
+    back.innerHTML = `<div class="meaning">${words[index].meaning}</div><div class="example">${words[index].sentence}</div>`;
+  }
+
+  function nextCard() {
+    currentIndex = (currentIndex + 1) % words.length;
+    showCard(currentIndex);
+  }
+
+  function prevCard() {
+    currentIndex = (currentIndex - 1 + words.length) % words.length;
+    showCard(currentIndex);
+  }
+
+  showCard(currentIndex);
+</script>
+</body>
+</html>
