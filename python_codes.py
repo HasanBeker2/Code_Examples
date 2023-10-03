@@ -20,3 +20,16 @@ def remove_element(data_structure, element):
 add_element(my_list, 42)
 add_element(my_list, 17)
 add_element(my_list, 99)
+
+
+# Print the current list
+print("Current list:", my_list)
+
+
+# Remove an element from the list using the remove_element function
+remove_element(my_list, 17)
+remove_element(my_list, 55)  # This will print a message since 55 is not in the list
+
+
+# Print the updated list
+print("Updated list:", my_list)
