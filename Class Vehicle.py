@@ -16,7 +16,7 @@ class Vehicle:
         print("Seating Capacity:", self.seating_capacity)
 
 
-vehicle1 = Vehicle(200,50000)
+vehicle1 = Vehicle(200,60000)
 vehicle1.assign_seating_capacity(5)
 vehicle1.display_properties()
 
