@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 class Circle(object):
     
     # Constructor
-    def __init__(self, radius=3, color='blue'):
+    def __init__(self, radius=5, color='blue'):
         self.radius = radius
         self.color = color 
     
