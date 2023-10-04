@@ -18,8 +18,8 @@ class Vehicle:
 
 vehicle1 = Vehicle(200,50000)
 vehicle1.assign_seating_capacity(5)
-vehicle1.display_properties
+vehicle1.display_properties()
 
 vehicle2 = Vehicle(180, 75000)
 vehicle2.assign_seating_capacity(4)
-vehicle2.display_properties
+vehicle2.display_properties()
