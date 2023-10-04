@@ -14,4 +14,12 @@ class Vehicle:
         print("Maximum Speed:", self.max_speed)
         print("Mileage:", self.mileage)
         print("Seating Capacity:", self.seating_capacity)
-       
+
+
+vehicle1 = Vehicle(200,50000)
+vehicle1.assign_seating_capacity(5)
+vehicle1.display_properties
+
+vehicle2 = Vehicle(180, 75000)
+vehicle2.assign_seating_capacity(4)
+vehicle2.display_properties
