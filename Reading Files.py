@@ -70,7 +70,7 @@ with open('Example2.txt', 'r+') as testwritefile:
     testwritefile.seek(0,0)
     print(testwritefile.read())
 
-# Copy file to another
+# 
 
 with open('Example2.txt','r') as readfile:
     with open('Example3.txt','w') as writefile:
