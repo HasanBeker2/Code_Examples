@@ -58,5 +58,27 @@ with open('Example2.txt', 'a+') as testwritefile: #The open() function is used t
 
 
 
+with open('Example2.txt', 'r+') as testwritefile:
+    testwritefile.seek(0,0) #write at beginning of file
+    testwritefile.write("Line 1" + "\n")
+    testwritefile.write("Line 2" + "\n")
+    testwritefile.write("Line 3" + "\n")
+    testwritefile.write("Line 4" + "\n")
+    testwritefile.write("finished\n")
+    #Uncomment the line below
+    testwritefile.truncate() #To work with a file on existing data, use r+ and a+. While using r+, it can be useful to add a .truncate() method at the end of your data. This will reduce the file to your data and delete everything that follows.
+    testwritefile.seek(0,0)
+    print(testwritefile.read())
 
+# Copy file to another
 
+with open('Example2.txt','r') as readfile:
+    with open('Example3.txt','w') as writefile:
+          for line in readfile:
+                writefile.write(line)
+                
+                
+# Verify if the copy is successfully executed
+
+with open('Example3.txt','r') as testwritefile:
+    print(testwritefile.read())
